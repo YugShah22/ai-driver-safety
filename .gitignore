@@ -1,0 +1,126 @@
+# ============================================================
+# AI Driver Safety & Intelligence Platform — .gitignore
+# ============================================================
+
+# ─── Environment Variables ───────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+!.env.example
+!.env.local.example
+
+# ─── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.hypothesis/
+
+# ─── Virtual Environments ────────────────────────────────────
+venv/
+env/
+ENV/
+.venv/
+.env/
+backend/venv/
+ml/venv/
+
+# ─── Node / Next.js ──────────────────────────────────────────
+node_modules/
+.next/
+out/
+.nuxt/
+.output/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tsbuildinfo
+
+# ─── ML / AI Artifacts ───────────────────────────────────────
+# Model weights & checkpoints
+models/*.pt
+models/*.pth
+models/*.h5
+models/*.onnx
+models/*.pkl
+models/*.joblib
+models/checkpoints/
+models/runs/
+
+# YOLO specific
+*.weights
+runs/
+yolov*/
+
+# Training artifacts
+ml/**/runs/
+ml/**/checkpoints/
+ml/**/wandb/
+ml/**/__pycache__/
+wandb/
+
+# ─── Data ────────────────────────────────────────────────────
+data/raw/
+data/processed/
+data/external/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.csv
+!data/**/.gitkeep
+!data/**/README.md
+
+# ─── IDE / Editor ────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── OS ──────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ─── Testing ─────────────────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ─── Misc ────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.temp
+dist-info/
