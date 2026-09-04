@@ -23,8 +23,9 @@ class Settings(BaseSettings):
     ]
 
     # ─── Supabase (server-side only — NEVER expose to frontend) ──
-    supabase_url: str = ""
-    supabase_service_role_key: str = ""
+    supabase_url:              str = ""
+    supabase_anon_key:         str = ""   # public anon key — safe for user-scoped requests
+    supabase_service_role_key: str = ""   # admin key — NEVER expose outside backend
 
     # ─── Database ────────────────────────────────────────────
     database_url: str = ""

@@ -156,7 +156,7 @@ Open: `http://localhost:3000`
 |---|---|
 | **Frontend** | Next.js 15, TypeScript, Tailwind CSS, App Router |
 | **Backend** | Python, FastAPI, Uvicorn |
-| **AI/ML** | PyTorch, OpenCV, scikit-learn, XGBoost, Ultralytics YOLO |
+| **AI/ML** | PyTorch, OpenCV, scikit-learn, XGBoost, Ultralytics YOLO, CNN, Transfer Learning (ResNet/EfficientNet) ANN |
 | **Database** | Supabase PostgreSQL |
 | **Auth** | Supabase Auth |
 | **Storage** | Supabase Storage |

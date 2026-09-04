@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import health
+from app.api.routes import trips
 from app.core.config import settings
 
 app = FastAPI(
@@ -30,8 +31,7 @@ app.add_middleware(
 
 # ─── Routers ─────────────────────────────────────────────────
 app.include_router(health.router, tags=["Health"])
+app.include_router(trips.router)   # Phase 2: Trip CRUD + pipeline stubs
 
-# Future routers (Phase 2+):
+# Future routers (Phase 4+):
 # app.include_router(analyze.router, prefix="/api/v1", tags=["Analysis"])
-# app.include_router(results.router, prefix="/api/v1", tags=["Results"])
-# app.include_router(auth.router,    prefix="/api/v1", tags=["Auth"])

@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
+
+import { useState, useEffect } from 'react';
+
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -142,9 +144,11 @@ export default function Navbar() {
 
         {/* CTA */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
+          <Link
+            href="/login"
             id="nav-cta-login"
             style={{
+              display: 'inline-block',
               background: 'transparent',
               border: '1px solid rgba(0,212,255,0.25)',
               color: '#00d4ff',
@@ -154,22 +158,24 @@ export default function Navbar() {
               fontWeight: 500,
               cursor: 'pointer',
               transition: 'all 0.2s',
-              fontFamily: 'inherit',
+              textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.background = 'rgba(0,212,255,0.08)';
-              (e.target as HTMLElement).style.borderColor = 'rgba(0,212,255,0.5)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(0,212,255,0.08)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.5)';
             }}
             onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.background = 'transparent';
-              (e.target as HTMLElement).style.borderColor = 'rgba(0,212,255,0.25)';
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.25)';
             }}
           >
             Sign In
-          </button>
-          <button
+          </Link>
+          <Link
+            href="/signup"
             id="nav-cta-start"
             style={{
+              display: 'inline-block',
               background: 'linear-gradient(135deg, #00d4ff, #6366f1)',
               border: 'none',
               color: '#fff',
@@ -179,20 +185,20 @@ export default function Navbar() {
               fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.2s',
-              fontFamily: 'inherit',
+              textDecoration: 'none',
               boxShadow: '0 0 20px rgba(0,212,255,0.25)',
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.transform = 'translateY(-1px)';
-              (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0,212,255,0.4)';
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(0,212,255,0.4)';
             }}
             onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.transform = 'translateY(0)';
-              (e.target as HTMLElement).style.boxShadow = '0 0 20px rgba(0,212,255,0.25)';
+              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(0,212,255,0.25)';
             }}
           >
             Get Started
-          </button>
+          </Link>
 
           {/* Mobile menu toggle */}
           <button

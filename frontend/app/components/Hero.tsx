@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 
 const stats = [
@@ -161,7 +162,8 @@ export default function Hero() {
           className="animate-fade-in-up delay-200"
           style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}
         >
-          <button
+          <Link
+            href="/signup"
             id="hero-cta-upload"
             style={{
               display: 'flex',
@@ -176,7 +178,7 @@ export default function Hero() {
               fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.25s',
-              fontFamily: 'inherit',
+              textDecoration: 'none',
               boxShadow: '0 0 40px rgba(0,212,255,0.30), 0 4px 20px rgba(0,0,0,0.3)',
               letterSpacing: '0.01em',
             }}
@@ -197,9 +199,10 @@ export default function Hero() {
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
             Upload Dashcam Footage
-          </button>
+          </Link>
 
-          <button
+          <a
+            href="#how-it-works"
             id="hero-cta-learn"
             style={{
               display: 'flex',
@@ -214,7 +217,7 @@ export default function Hero() {
               fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.25s',
-              fontFamily: 'inherit',
+              textDecoration: 'none',
               backdropFilter: 'blur(12px)',
             }}
             onMouseEnter={(e) => {
@@ -234,7 +237,7 @@ export default function Hero() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </button>
+          </a>
         </div>
 
         {/* Stats row */}
