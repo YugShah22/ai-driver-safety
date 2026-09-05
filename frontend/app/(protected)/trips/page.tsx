@@ -2,17 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import type { Trip } from '@/types';
+import TripsClient from './TripsClient';
 
 export const metadata: Metadata = {
   title: 'Trips — AI Driver Safety Platform',
-};
-
-const statusColors: Record<string, { bg: string; text: string }> = {
-  UPLOADED:   { bg: 'rgba(148,163,184,0.12)', text: '#94a3b8' },
-  PROCESSING: { bg: 'rgba(245,158,11,0.12)',  text: '#fbbf24' },
-  ANALYZING:  { bg: 'rgba(99,102,241,0.12)',  text: '#a5b4fc' },
-  COMPLETED:  { bg: 'rgba(16,185,129,0.12)',  text: '#34d399' },
-  FAILED:     { bg: 'rgba(239,68,68,0.12)',   text: '#f87171' },
 };
 
 export default async function TripsPage() {
@@ -113,65 +106,7 @@ export default async function TripsPage() {
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {trips.map((trip) => {
-            const { bg, text } = statusColors[trip.status] ?? { bg: 'transparent', text: '#94a3b8' };
-            return (
-              <Link
-                key={trip.id}
-                href={`/trips/${trip.id}`}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr auto auto',
-                  alignItems: 'center',
-                  gap: '16px',
-                  background: 'rgba(8,18,40,0.65)',
-                  border: '1px solid rgba(0,212,255,0.08)',
-                  borderRadius: '14px',
-                  padding: '18px 22px',
-                  textDecoration: 'none',
-                  transition: 'all 0.18s',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.22)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,212,255,0.08)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                }}
-              >
-                <div>
-                  <p style={{ fontSize: '15px', fontWeight: 600, color: '#e2e8f0', marginBottom: '4px' }}>
-                    {trip.title}
-                  </p>
-                  <p style={{ fontSize: '12px', color: '#475569' }}>
-                    {new Date(trip.created_at).toLocaleString()}
-                    {trip.duration ? ` · ${Math.round(trip.duration)}s` : ''}
-                  </p>
-                </div>
-                <span
-                  style={{
-                    background: bg,
-                    color: text,
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    padding: '4px 10px',
-                    borderRadius: '6px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {trip.status}
-                </span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-            );
-          })}
-        </div>
+        <TripsClient initialTrips={trips} />
       )}
     </div>
   );

@@ -125,7 +125,12 @@ export default function AppSidebar() {
       {/* Navigation */}
       <nav style={{ flex: 1, padding: '0 12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
         {navItems.map((item) => {
-          const active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+          let active = false;
+          if (item.href === '/trips') {
+            active = pathname === '/trips' || (pathname.startsWith('/trips/') && !pathname.startsWith('/trips/upload'));
+          } else {
+            active = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+          }
           return (
             <Link
               key={item.href}

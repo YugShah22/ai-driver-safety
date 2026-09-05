@@ -59,6 +59,40 @@ export default async function DashboardPage() {
   const failed    = tripList.filter((t) => t.status === 'FAILED').length;
   const recent    = tripList.slice(0, 3);
 
+  // Fetch AI analysis data for stats
+  const tripIds = tripList.map((t) => t.id);
+
+  let avgRiskScore = '—';
+  let highRiskEventsCount = '—';
+  let laneDeviationsCount = '—';
+  let hardBrakingCount = '—';
+  let pedestrianWarningsCount = '—';
+
+  if (tripIds.length > 0) {
+    // Risk score
+    const { data: riskData } = await supabase.from('risk_predictions').select('risk_score').in('trip_id', tripIds);
+    if (riskData && riskData.length > 0) {
+      const totalScore = riskData.reduce((acc, curr) => acc + curr.risk_score, 0);
+      avgRiskScore = (totalScore / riskData.length * 100).toFixed(1) + '%';
+    }
+
+    // Events
+    const { data: eventsData } = await supabase.from('driving_events').select('event_type, severity').in('trip_id', tripIds);
+    if (eventsData) {
+      const highRisk = eventsData.filter(e => e.severity === 'HIGH' || e.severity === 'CRITICAL');
+      highRiskEventsCount = String(highRisk.length);
+      
+      const laneDevs = eventsData.filter(e => e.event_type === 'LANE_DEPARTURE');
+      laneDeviationsCount = String(laneDevs.length);
+
+      const hardBraking = eventsData.filter(e => e.event_type === 'HARD_BRAKING');
+      hardBrakingCount = String(hardBraking.length);
+
+      const pedWarnings = eventsData.filter(e => e.event_type === 'PEDESTRIAN_PROXIMITY');
+      pedestrianWarningsCount = String(pedWarnings.length);
+    }
+  }
+
   // Fetch profile for greeting
   const { data: profile } = await supabase
     .from('profiles')
@@ -98,12 +132,12 @@ export default async function DashboardPage() {
           marginBottom: '40px',
         }}
       >
-        <StatCard title="Total Trips"      value={String(total)}     subtitle="All time"           accent="#00d4ff" />
-        <StatCard title="Completed"        value={String(completed)} subtitle="Successfully analyzed" accent="#10b981" />
-        <StatCard title="Processing"       value={String(tripList.filter(t => ['PROCESSING','ANALYZING','UPLOADED'].includes(t.status)).length)} subtitle="In queue or active" accent="#f59e0b" />
-        <StatCard title="Avg Risk Score"   value="—"                 subtitle="Available after analysis" accent="#8b5cf6" />
-        <StatCard title="High-Risk Events" value="—"                 subtitle="Available after analysis" accent="#ef4444" />
-        <StatCard title="Failed"           value={String(failed)}    subtitle="Check logs"          accent="#64748b" />
+        <StatCard title="Total Trips"         value={String(total)}           subtitle="All time"                   accent="#00d4ff" />
+        <StatCard title="Avg Risk Score"      value={avgRiskScore}            subtitle="Based on AI analysis"       accent="#8b5cf6" />
+        <StatCard title="High-Risk Events"    value={highRiskEventsCount}     subtitle="Severity High/Critical"     accent="#ef4444" />
+        <StatCard title="Lane Deviations"     value={laneDeviationsCount}     subtitle="Detected departures"        accent="#f59e0b" />
+        <StatCard title="Hard Braking"        value={hardBrakingCount}        subtitle="Abrupt stops"               accent="#ef4444" />
+        <StatCard title="Pedestrian Warnings" value={pedestrianWarningsCount} subtitle="Proximity alerts"           accent="#10b981" />
       </div>
 
       {/* Recent trips */}
