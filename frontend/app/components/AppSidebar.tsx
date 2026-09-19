@@ -183,10 +183,10 @@ export default function AppSidebar() {
           }}
         >
           <p style={{ fontSize: '11px', color: '#00d4ff', fontWeight: 600, marginBottom: '2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Phase 2
+            Phase 4
           </p>
           <p style={{ fontSize: '11px', color: '#475569', lineHeight: 1.4 }}>
-            Supabase Auth & DB active
+            Video Processing 
           </p>
         </div>
       </div>

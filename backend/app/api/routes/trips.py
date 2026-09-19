@@ -274,13 +274,21 @@ async def process_trip(
         # Update status to PROCESSING
         supabase.table("trips").update({"status": "PROCESSING"}).eq("id", str(trip_id)).execute()
 
-        # TODO Phase 4: background_tasks.add_task(run_analysis_pipeline, trip_id, user_id)
-        logger.info("Analysis pipeline stub triggered for trip %s (Phase 4 pending)", trip_id)
+        # Start the analysis pipeline in the background
+        from app.db.supabase_client import get_supabase_admin
+        from ml.video_processing.pipeline import run_processing_pipeline
+
+        background_tasks.add_task(
+            run_processing_pipeline,
+            trip_id=str(trip_id),
+            supabase=get_supabase_admin(),
+        )
+        logger.info("Background processing pipeline triggered for trip %s", trip_id)
 
         return ProcessTripResponse(
             trip_id=trip_id,
             status="PROCESSING",
-            message="Analysis pipeline will be implemented in Phase 4 (Video Processing).",
+            message="Video processing has started in the background.",
         )
     except HTTPException:
         raise

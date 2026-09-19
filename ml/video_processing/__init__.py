@@ -1,10 +1,22 @@
 """
-Video Processing module — OpenCV-based dashcam video utilities.
+Video Processing module for the AI Driver Safety Platform.
 
-Phase 3+ will implement:
-  - VideoLoader: reads video files and streams frames
-  - FrameSampler: configurable FPS sampling (e.g., 5fps from 30fps source)
-  - VideoPreprocessor: resize, normalize, color-space conversion
-  - MotionAnalyzer: optical flow for speed / motion estimation
-  - AnnotatedVideoWriter: overlays detection boxes + risk score on output video
+VideoProcessor: extracts frames, generates thumbnails, and uploads to Supabase Storage.
+No AI/ML inference is performed here — this is pure video preprocessing.
 """
+
+from .processor import VideoProcessor
+from .models import (
+    VideoMetadata,
+    ExtractedFrame,
+    ProcessingConfig,
+    ResizeMode,
+)
+
+__all__ = [
+    "VideoProcessor",
+    "VideoMetadata",
+    "ExtractedFrame",
+    "ProcessingConfig",
+    "ResizeMode",
+]

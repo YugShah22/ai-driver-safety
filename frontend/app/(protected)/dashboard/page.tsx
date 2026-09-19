@@ -72,23 +72,25 @@ export default async function DashboardPage() {
     // Risk score
     const { data: riskData } = await supabase.from('risk_predictions').select('risk_score').in('trip_id', tripIds);
     if (riskData && riskData.length > 0) {
-      const totalScore = riskData.reduce((acc, curr) => acc + curr.risk_score, 0);
+      const totalScore = (riskData as any[]).reduce((acc, curr) => acc + (curr.risk_score || 0), 0);
       avgRiskScore = (totalScore / riskData.length * 100).toFixed(1) + '%';
     }
 
     // Events
     const { data: eventsData } = await supabase.from('driving_events').select('event_type, severity').in('trip_id', tripIds);
+    
     if (eventsData) {
-      const highRisk = eventsData.filter(e => e.severity === 'HIGH' || e.severity === 'CRITICAL');
+      const events = eventsData as any[];
+      const highRisk = events.filter(e => e.severity === 'HIGH' || e.severity === 'CRITICAL');
       highRiskEventsCount = String(highRisk.length);
       
-      const laneDevs = eventsData.filter(e => e.event_type === 'LANE_DEPARTURE');
+      const laneDevs = events.filter(e => e.event_type === 'LANE_DEPARTURE');
       laneDeviationsCount = String(laneDevs.length);
 
-      const hardBraking = eventsData.filter(e => e.event_type === 'HARD_BRAKING');
+      const hardBraking = events.filter(e => e.event_type === 'HARD_BRAKING');
       hardBrakingCount = String(hardBraking.length);
 
-      const pedWarnings = eventsData.filter(e => e.event_type === 'PEDESTRIAN_PROXIMITY');
+      const pedWarnings = events.filter(e => e.event_type === 'PEDESTRIAN_PROXIMITY');
       pedestrianWarningsCount = String(pedWarnings.length);
     }
   }

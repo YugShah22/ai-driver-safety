@@ -83,12 +83,12 @@ export default async function AnalyticsPage() {
       .limit(50); // Downsample for the chart
       
     if (metricsRaw) {
-      drivingMetrics = metricsRaw
+      drivingMetrics = (metricsRaw as any[])
         .filter(m => m.speed != null && m.acceleration != null)
         .map(m => ({
           time: new Date(m.timestamp * 1000).toLocaleTimeString([], { minute: '2-digit', second: '2-digit' }),
-          speed: Math.round(m.speed!),
-          acceleration: Number(m.acceleration!.toFixed(2))
+          speed: Math.round(m.speed),
+          acceleration: Number(m.acceleration.toFixed(2))
         }));
     }
   }
