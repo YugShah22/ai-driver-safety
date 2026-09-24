@@ -6,5 +6,6 @@ Dataset-specific adapters added later should also be imported here.
 """
 
 from .generic import GenericFolderAdapter  # registers "generic"
+from .indian_road import IndianRoadAdapter  # registers "indian_road"
 
-__all__ = ["GenericFolderAdapter"]
+__all__ = ["GenericFolderAdapter", "IndianRoadAdapter"]
