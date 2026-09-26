@@ -387,3 +387,65 @@ class TestInferencer:
         infer = Inferencer.from_checkpoint(ckpt_path, small_cfg, class_names=["cat", "dog"])
         result = infer.predict(synthetic_image)
         assert isinstance(result, InferenceResult)
+
+
+# =============================================================================
+# Integration — IndianRoadAdapter → CNNConfig → SceneCNN
+# =============================================================================
+
+class TestIndianRoadAdapterToCNNIntegration:
+    """
+    Verifies the num_classes wiring from IndianRoadAdapter all the way to
+    SceneCNN's output logits — without real dataset files, training, or HF access.
+
+    Flow under test:
+        IndianRoadAdapter.num_classes()  →  6
+        CNNConfig(num_classes=6)         →  SceneCNN with 6-way head
+        SceneCNN(batch (2, 3, 32, 32))   →  logits shape (2, 6)
+    """
+
+    def test_num_classes_flows_from_adapter_to_cnn_output(self, tmp_path: Path) -> None:
+        # ── Step 1: build the adapter (no real files needed) ─────────────────
+        from ml.datasets.config import DatasetConfig
+        from ml.datasets.adapters.indian_road import IndianRoadAdapter
+
+        dataset_cfg = DatasetConfig(
+            name="indian-road-integration",
+            root=tmp_path,
+            annot_dir="annotations",
+            adapter="indian_road",
+            extra={"source": "local"},
+        )
+        adapter = IndianRoadAdapter(dataset_cfg)
+
+        # ── Step 2: read num_classes from the adapter ─────────────────────────
+        # get_class_names() is implemented and returns SCENE_CLASSES immediately
+        # — no load_annotations() call needed for this value.
+        n_classes = adapter.num_classes()
+        assert n_classes == 6, (
+            f"Expected IndianRoadAdapter.num_classes() == 6, got {n_classes}"
+        )
+
+        # ── Step 3: build CNNConfig from the adapter's class count ────────────
+        cfg = CNNConfig(
+            num_classes=n_classes,   # must be 6
+            image_size=(32, 32),
+            device="cpu",
+        )
+        assert cfg.num_classes == 6
+
+        # ── Step 4: build SceneCNN ────────────────────────────────────────────
+        model = SceneCNN(cfg)
+        model.eval()
+
+        # ── Step 5: forward pass with a synthetic batch ───────────────────────
+        batch = torch.randn(2, 3, 32, 32)
+
+        with torch.no_grad():
+            logits = model(batch)
+
+        # ── Step 6: assert output shape is (batch=2, classes=6) ──────────────
+        assert logits.shape == (2, 6), (
+            f"Expected logits shape (2, 6), got {tuple(logits.shape)}"
+        )
+

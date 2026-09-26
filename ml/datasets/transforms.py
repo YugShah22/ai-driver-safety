@@ -28,7 +28,6 @@ from __future__ import annotations
 from typing import Tuple
 
 from torchvision import transforms
-from typing import Tuple
 
 
 # Canonical ImageNet normalisation statistics — used as defaults.
