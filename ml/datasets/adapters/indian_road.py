@@ -356,7 +356,7 @@ class IndianRoadAdapter(DatasetAdapter):
     def _iter_frames_local(self, clip_ids: list[str]) -> Iterator[tuple[Path, str, int]]:
         for clip_id in clip_ids:
             clip_dir = (
-                self.config.data_root
+                self.config.root
                 / self._frames_subdir
                 / clip_id
             )
@@ -372,7 +372,7 @@ class IndianRoadAdapter(DatasetAdapter):
 
     def _iter_frames_tar(self, clip_ids: list[str]) -> Iterator[tuple[Path, str, int]]:
         requested_clips = set(clip_ids)
-        shards_dir = self.config.data_root / self._shards_subdir
+        shards_dir = self.config.root / self._shards_subdir
         shard_files = sorted(shards_dir.glob("*.tar"))
 
         for shard_path in shard_files:
