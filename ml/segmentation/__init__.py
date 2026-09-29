@@ -1,8 +1,10 @@
-"""
-Segmentation module — Semantic and lane segmentation.
+from .schema import SegmentationResult, LaneResult
+from .model import SegmentationModel
+from .lane import LaneAnalyzer
 
-Phase 3+ will implement:
-  - Road/lane segmentation (DeepLabV3 / SegFormer)
-  - Free-space estimation
-  - Lane departure detection helper
-"""
+__all__ = [
+    "SegmentationResult",
+    "LaneResult",
+    "SegmentationModel",
+    "LaneAnalyzer",
+]
